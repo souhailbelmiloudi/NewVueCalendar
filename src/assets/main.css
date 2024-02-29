@@ -1,0 +1,83 @@
+.header {
+  display: flex;
+  flex-direction: column; /* Maintains column layout */
+  padding: 10px;
+  background: linear-gradient(to right, #9adfff, #c4facf);
+  border-radius: 5px 5px 0 0;
+}
+
+
+
+.header .wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10px; /* Adjusts padding for cleaner layout */
+}
+
+.header .wrapper .month h2 {
+  font-size: 22px; /* Balances font size and responsiveness */
+  font-weight: bold;
+  letter-spacing: 2px; /* Subtle letter spacing */
+  color: #030303; /* Maintains white text color */
+}
+
+.header .wrapper .chev {
+  user-select: none;
+ 
+  width: 40px; /* Adjusts button size for better balance */
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+.header .wrapper .chev:hover {
+    background-color: #13a58d;
+    width: 45px;
+    height: 45px;
+}
+
+.header .wrapper .chev img {
+  width: 60%; /* Slightly smaller image size for better balance */
+  height: auto;
+  transform: translateX(2px);
+}
+
+.header .wrapper .left-chev {
+  transform: rotate(180deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .header .wrapper {
+    flex-direction: column; /* Keeps column layout */
+    padding: 10px 0; /* Adjusts padding for smaller screens */
+  }
+
+  .header .wrapper .month h2 {
+    font-size: 20px; /* Consistent font size reduction */
+    letter-spacing: 1px; /* Minimal letter spacing on small screens */
+  }
+
+  .header .wrapper .chev {
+    width: 30px; /* Consistent button size reduction */
+    height: 30px;
+  }
+
+  .header .wrapper .chev img {
+    width: 50%; /* Consistent image size reduction */
+  }
+}
+
+.papelera{
+    background-color: #f71212;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 50px;
+    height: 30px;
+}
