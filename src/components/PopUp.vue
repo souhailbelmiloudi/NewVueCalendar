@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, withDefaults } from 'vue';
+import { ref, withDefaults,onMounted  } from 'vue';
 import type { PropsDate } from '@/utils/Interfaces';
 
 
@@ -48,6 +48,7 @@ const clear = () => {
     //horaFin.value = '';
 };
 
+
 </script>
 
 
@@ -58,19 +59,16 @@ const clear = () => {
               &times;
             </div>
             <h1>
-                {{ fecha }} 
+                {{ props.fecha }}
             </h1>
             <div class="input">
                  <div class="error" v-if="error">{{ error }}</div>
-
-                 
-                <input type="text" placeholder="Tarea" v-model="tarea"  required/>
+                <input type="text" placeholder="Tarea" v-model="tarea"  required />
                 <input type="text" placeholder="Descripcion" v-model="descripcion" required/>
                 <label for="fecha">Hora</label>
                 <input type="time" id="fecha" name="fecha" v-model="hora" />
                 <label for="fecha">Hora Fin</label>
                 <!-- <input type="time" id="fecha" name="fecha" v-model="horaFin" /> -->
-        
             </div>
             <button @click="$emit('close')">
                 Cerrar

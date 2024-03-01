@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
 import type { Evento } from '@/utils/Interfaces';
 
 // Define las propiedades esperadas en el componente

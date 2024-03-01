@@ -53,7 +53,7 @@ watchEffect(() => {
               &times;
             </div>
             <h1>
-                {{ props.fecha}}
+                {{ convertirFechaInversa(fecha) }}
           
             </h1>
             <div class="input">

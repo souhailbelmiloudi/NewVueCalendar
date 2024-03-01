@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, watchEffect } from 'vue';
-import { withDefaults, ref, defineProps } from 'vue';
+import { withDefaults, ref } from 'vue';
 import { getAllEventos, createEvento, deleteEvento, updateEvento } from '@/CrudAxios/crudAxios';
 import { diasSemana, diasSemanaIngles, diasSemanaCorto2 } from '@/utils/dateFunciones';
 import type { Evento, PropsCelda } from '@/utils/Interfaces';
@@ -45,6 +45,23 @@ const cargarEventos = async () => {
     alert('Error al cargar eventos');
   }
 };
+
+/**
+ * Función para mantener la lista actualizada en tiempo real.
+ * esto se puede hacer con polling o con websockets 
+ */
+
+// const startPolling = async () => {
+//     setInterval(async () => {
+//         try {
+//            eventoss.value = await getAllEventos();
+//            ;
+//         } catch (error) {
+//             console.error('Error en el polling:', error);
+//         }
+//     }, 5000); // Realizar polling cada 5 segundos (ajusta el intervalo según tus necesidades)
+// };
+// startPolling();
 
 /**
  * Función para abrir el pop-up para agregar un evento.
@@ -250,7 +267,7 @@ watchEffect(() => {
           <!-- fin campo eventos -->
           <transition name="fade">
             <PopUp v-show="popUp && selectedDate === tablaMes[i - 1][j]" @close="closePopUp"
-              @confirmar="maneJarDatosRecibidos" :dia="selectedDate" />
+              @confirmar="maneJarDatosRecibidos" :fecha="selectedDate" />
           </transition>
           <transition name="fade">
             <PopUpModificar v-show="popUpModificar && evento" @close="closePopUpModificar" @confirmar="modificarEvento"
