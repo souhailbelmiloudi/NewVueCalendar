@@ -9,7 +9,6 @@ const props = defineProps({
 <template>
     <thead class="encabezado">
         <tr>
-            <th></th>
             <th v-for="dia in props.diasSemana">{{ dia }}</th>
         </tr>
     </thead>

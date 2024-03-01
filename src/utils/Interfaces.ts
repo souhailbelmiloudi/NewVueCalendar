@@ -5,11 +5,12 @@ export interface Evento {
     descripcion: string;
     hora: string;
     fecha: string;
+    //horaFin : string;
 }
 
 
 export interface PropsDate {
-    dia: string;
+    fecha: string;
 }
 
 

@@ -5,7 +5,6 @@ import NavBar from '@/vistas/NavBar.vue'
 <template>
     <main>
         <NavBar />
-
     </main>
     <RouterView />
 </template>

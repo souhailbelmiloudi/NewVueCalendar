@@ -1,12 +1,8 @@
 <script setup lang="ts">
+import type { PropsDate } from '@/utils/Interfaces';
 
-
-interface Props {
-  valor?:string
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  valor: '-'
+const props = withDefaults(defineProps<PropsDate>(), {
+  fecha: '-'
 })
 
 /****
@@ -15,15 +11,14 @@ const props = withDefaults(defineProps<Props>(), {
  * @returns {string} - El día de la fecha.
  * 
  */
-const obtenerDia = (fecha: string) => {
+const obtenerDia = (fecha: string) : string => {
   return fecha.split('/')[0];
-
 };
 </script>
 
 <template>
    <div >
-    <p>{{obtenerDia(props.valor)}}</p>
+    <p>{{obtenerDia(props.fecha)}}</p>
    </div>
 </template>
 

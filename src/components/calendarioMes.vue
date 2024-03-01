@@ -8,38 +8,8 @@ import celdaCalendario from '@/components/celdaCalendario.vue';
 import PopUpModificar from '@/components/PopUpModificar.vue';
 import PopUp from '@/components/PopUp.vue';
 import EncabezadoDias from '@/vistas/EncabezadoDias.vue';
+import Eventos from '@/components/EventosVue.vue';
 
-const tipodedias = ref<string>('español');
-
-
-/**
- * Función para filtrar dias de segun el tipo pasado
- */
-const filtrarDias = (tipo: string) => {
-  switch (tipo) {
-    case 'español':
-      return diasSemana;
-      break;
-    case 'ingles':
-     return diasSemanaIngles;
-      break;
-    case 'corto':
-   return diasSemanaCorto2;
-      break;
-    case 'soloFinde':
-      return [ 'Lunes', 'Martes' ]
-      break;
-    case 'soloLaborales':
-      return ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
-      break;
-  }
-};
-
-
-const cols = computed(() => {
-  console.log(filtrarDias(tipodedias.value));
-  return filtrarDias(tipodedias.value);
-});
 
 // Definir props con valores por defecto
 const props = withDefaults(defineProps<PropsCelda>(), {
@@ -55,14 +25,14 @@ const eventoss = ref<Evento[]>([]);
 const selectedDate = ref<string>("");
 const popUp = ref<boolean>(false);
 const popUpModificar = ref<boolean>(false);
-
+const tipodedias = ref<string>('español');
 const evento = ref<Evento>({
   id: '',
   tarea: '',
   descripcion: '',
   hora: '',
   fecha: '',
-//horaFin: ''
+ //horaFin: ''
 });
 
 /**
@@ -114,6 +84,7 @@ const closePopUpModificar = () => {
  * @param {string} datos.hora - La hora del evento.
  */
 const maneJarDatosRecibidos = async (datos: { tarea: string; descripcion: string; hora: string; }) => {
+  
   await createEvento(datos);
   await cargarEventos();
   closePopUp();
@@ -151,7 +122,7 @@ const anadevalorSecuencial = (numero: number, valor: string, celdas: string[][])
 };
 const tablaMes = computed(() => {
   const celdas = Array.from(Array(props.COLS).keys()).map(() =>
-    Array.from(Array(props.ROWS + 1).keys()).map(() => '- ')) 
+    Array.from(Array(props.ROWS + 1).keys()).map(() => '')) 
   const primerDia = new Date(`${props.anio}-${props.mes}-1`)
   const posicionPrimerDia = [6, 0, 1, 2, 3, 4, 5][primerDia.getDay()]
   const numDiasMes = new Date(props.anio, props.mes, 0).getDate()
@@ -184,13 +155,32 @@ const dropBorrar = async () => {
   await cargarEventos(); // Recargar eventos después de borrar uno
 }
 
+/**
+ * Función para filtrar dias de segun el tipo pasado
+ */
+const filtrarDias = (tipo: string) => {
+  switch (tipo) {
+    case 'español':
+      return diasSemana;
+      break;
+    case 'ingles':
+      return diasSemanaIngles;
+      break;
+    case 'corto':
+      return diasSemanaCorto2;
+      break;
+    case 'soloFinde':
+      return ['Lunes', 'Martes']
+      break;
+    case 'soloLaborales':
+      return ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
+      break;
+  }
+};
 
-
-
-watchEffect(() => {
-  cargarEventos();
- tipodedias.value
-  
+//computed para filtrar los dias segun el tipo
+const cols = computed(() => {
+  return filtrarDias(tipodedias.value);
 });
 
 const calcularClasesCelda = (fetcha: string) => {
@@ -198,13 +188,20 @@ const calcularClasesCelda = (fetcha: string) => {
   const FormatoFecha = `${hoy.getDate()}/${hoy.getMonth() + 1}/${hoy.getFullYear()}`
   if (fetcha === FormatoFecha) {
     return 'bold'
-  } else if (fetcha === '- ') {
+  } else if (fetcha === '') {
     return 'inactive'
   } else {
     return ''
   }
 
 };
+
+
+watchEffect(() => {
+  cargarEventos();
+  tipodedias.value
+
+});
 
 
 
@@ -219,7 +216,7 @@ const calcularClasesCelda = (fetcha: string) => {
       <button  class="btnBorrar" 
                @dragover="eventoDragover" 
                @drop="dropBorrar">
-        <box-icon type='solid' name='calendar-x'></box-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m8.293 16.293 1.414 1.414L12 15.414l2.293 2.293 1.414-1.414L13.414 14l2.293-2.293-1.414-1.414L12 12.586l-2.293-2.293-1.414 1.414L10.586 14z"/><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm.002 16H5V8h14l.002 12z"/></svg>
       </button>
       <select name="" id="" v-model="tipodedias">
         <option value="español">Español</option>
@@ -235,27 +232,21 @@ const calcularClasesCelda = (fetcha: string) => {
         
     <tbody>
       <tr v-for="i in props.ROWS" :key="i">
-        <th>{{ i - 1 }}</th>
+        
         <td v-for="(c, j) in cols" :key="c" :class="calcularClasesCelda(tablaMes[i - 1][j])">
-          <celdaCalendario :valor="tablaMes[i - 1][j]"  />
+          <celdaCalendario :fecha="tablaMes[i - 1][j]"  />
           <button class="btn" 
           @click="openPopUp(tablaMes[i - 1][j])"  
           @dragover="eventoDragover"
           @drop="eventoDrop(tablaMes[i - 1][j])"
-          v-if="tablaMes[i - 1][j] !== '- '">
+          v-if="tablaMes[i - 1][j] !== ''">
           +</button>
           <!--campo eventos -->
-          <div class="event-contenedor" v-for="event in eventoss" :key="event.id"   
-          
-                     >
-            <div class="event" v-if="tablaMes[i - 1][j] === event.fecha" :draggable="true"  @dragstart="eventorastrado(event)" >
-              <span>{{ event.tarea }}</span>
-              <div class="btn-event">
-                <button class="btn" @click="openPopUpModificar(event)">+</button>
-                <button class="btn-rojo" @click="eliminarEvento(event.id)">-</button>
-              </div>
-            </div>
-          </div>
+          <Eventos  :fechaEvento="`${tablaMes[i - 1][j]}`" 
+                    :eventoss="eventoss"  
+                    @eliminar="eliminarEvento" 
+                    @open="openPopUpModificar" 
+                    @dragstart="eventorastrado"/>
           <!-- fin campo eventos -->
           <transition name="fade">
             <PopUp v-show="popUp && selectedDate === tablaMes[i - 1][j]" @close="closePopUp"
@@ -264,7 +255,8 @@ const calcularClasesCelda = (fetcha: string) => {
           <transition name="fade">
             <PopUpModificar v-show="popUpModificar && evento" @close="closePopUpModificar" @confirmar="modificarEvento"
               :id="evento.id" :tarea="evento.tarea" :descripcion="evento.descripcion" :hora="evento.hora"
-              :fecha="evento.fecha" />
+              :fecha="evento.fecha"  />
+              <!-- :horaFin="evento.horaFin" -->
           </transition>
         </td>
       </tr>
@@ -277,22 +269,10 @@ body {
   margin: 0;
 }
 
-table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-}
 
 th {
-  background-color: #eee;
-}
-
-tr:first-of-type th {
-  width: 100px;
-}
-
-tr:first-of-type th:first-of-type {
-  width: 25px;
+  background-color: #c5e1d7;
+ 
 }
 
 td {
@@ -321,19 +301,42 @@ table {
   /* Color de fondo opcional para la tabla */
 }
 
-th,
+
 td {
-  border: 1px solid #ddd;
+ font-weight: bold;
+ 
   padding: 10px;
-  text-align: left;
-  height: 80px;
-  vertical-align: top;
+  /* Relleno de celda */
+  border: 1px solid #ddd;
+  /* Agrega un borde delgado a las celdas */
+  font-size: 14px;
+  /* Tamaño de fuente */
+  color: #333;
+}
+th {
+  padding: 10px;
+  /* Relleno de celda */
+  border: 1px solid #ddd;
+  /* Agrega un borde delgado a las celdas */
+  font-size: 14px;
+  /* Tamaño de fuente */
+  color: #333;
+}
+td:hover {
+  background-color: #b9c7f1;
+  color: rgb(1, 1, 1);
+  /* Color de fondo más claro al pasar el cursor */
 }
 
 .inactive {
   color: #888;
   background-color: #f4f4f4;
   /* Color de texto apagado */
+}
+
+.inactive:hover {
+  background-color: #f4f4f4;
+  /* Color de fondo más claro al pasar el cursor */
 }
 
 /* Esquema de colores moderno y accesible */
@@ -349,7 +352,7 @@ td {
 }
 
 tr:nth-child(even) {
-  background-color: #f7f7f7;
+  background-color: #ffffff;
 }
 
 .btn {
@@ -372,6 +375,7 @@ tr:nth-child(even) {
 .event {
   background-color: #ffffff;
   border: 1px solid #6663ba;
+  color: #333;
   border-radius: 10px;
   padding: 3px;
   margin-bottom: 1px;

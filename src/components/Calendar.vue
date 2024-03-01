@@ -19,7 +19,6 @@ const VolverAlMesActual = () => {
 
 //Función para incrementar el mes
 const increment = () => {
-
     mimes.value++
     if (mimes.value === 13) {
         mimes.value = 1;
@@ -28,7 +27,6 @@ const increment = () => {
 }
 //Decrementar el mes
 const decrement = () => {
-
     mimes.value--
     if (mimes.value === 0) {
         mimes.value = 12;
@@ -36,44 +34,54 @@ const decrement = () => {
     }
 }
 
-
-
+const incrementDrop = () => {
+  setTimeout(() => {
+    mimes.value++
+    if (mimes.value === 13) {
+        mimes.value = 1;
+        mianio.value++
+    }
+  }, 1000)
+}
+const decrementDrop = () => {
+  setTimeout(() => {
+    mimes.value--
+    if (mimes.value === 0) {
+        mimes.value = 12;
+        mianio.value--
+    }
+  }, 1000)
+}
 </script>
 <template>
     <main>
         <div class="header">
             <div class="wrapper">
-                <!--volver al mes actual-->
-
-                <!--Actualizar el mes -->
-
-                <!--Select para seleccionar el mes -->
-
-                <!--Fin del select -->
-
-                <!--Actualizar el año -->
+                <!-- Boton para ir al año anterior -->
                 <div class="chev" @click="mianio--">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="m12.707 7.707-1.414-1.414L5.586 12l5.707 5.707 1.414-1.414L8.414 12z" />
                         <path d="M16.293 6.293 10.586 12l5.707 5.707 1.414-1.414L13.414 12l4.293-4.293z" />
                     </svg>
                 </div>
-                <div class="chev" @click="decrement" @dragenter="decrement" @dragover.prevent>
-                    <img src="https://img.icons8.com/ios/50/000000/long-arrow-left.png" />
+                <!--Boton para ir al mes anterior -->
+                <div class="chev" @click="decrement"  >
+                    <img src="https://img.icons8.com/ios/50/000000/long-arrow-left.png"  @dragenter="decrementDrop"/>
                 </div>
-                <select name="" id="" v-model="mimes">
+                <input type="text" v-model="mes[mimes - 1]" readonly />
+                <!-- <select name="" id="" v-model="mimes">
                     <option v-for="(mesLetra, index) in mes" :key="index" :value="index + 1">
                         {{ mesLetra }}
                     </option>
-                </select>
+                </select> -->
                 <div class="chev" @click="VolverAlMesActual" @dragenter="VolverAlMesActual" @dragover.prevent>
                     <button @click="VolverAlMesActual" class="btnHoy">Hoy</button>
                 </div>
                 <h2>
                     <input type="number" v-model="mianio" min="2000" max="2050" />
                 </h2>
-                <div class="chev" @click="increment" @dragenter="increment" @dragover.prevent>
-                    <img src="https://img.icons8.com/ios/50/000000/long-arrow-right.png" />
+                <div class="chev" @click="increment"  @dragover.prevent>
+                    <img src="https://img.icons8.com/ios/50/000000/long-arrow-right.png" @dragenter="incrementDrop"/>
                 </div>
                 <div class="chev" @click="mianio++">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -83,8 +91,6 @@ const decrement = () => {
                 </div>
             </div>
         </div>
-
-
         <calendarioMes :mes="mimes" :anio="mianio" />
 
     </main>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, withDefaults, watchEffect, h } from 'vue';
 import type { Evento } from '@/utils/Interfaces';
+import { convertirFecha, convertirFechaInversa } from '@/utils/dateFunciones';
+
+
 
 const props = withDefaults(defineProps<Evento>(), {
     id: '',
@@ -8,36 +11,36 @@ const props = withDefaults(defineProps<Evento>(), {
     descripcion: '',
     hora: '',
     fecha: '', 
-   // horaFin: ''  
+    //horaFin: ''  
 });
-
 const emit = defineEmits(['close', 'confirmar']);
+//variables reactivas
 const tarea = ref<string>(props.tarea);
 const descripcion = ref<string>(props.descripcion);
 const hora = ref<string>(props.hora);
 const fecha = ref<string>(props.fecha);
 //const horaFin = ref<string>(props.horaFin);
 
-
-watchEffect(() => {
-    tarea.value = props.tarea;
-    descripcion.value = props.descripcion;
-    hora.value = props.hora;
-    fecha.value = props.fecha
-   // horaFin.value = props.horaFin;
-});
-
+//funciones para el manejo de eventos
 const confirmar = () => {
     const datosTarea = {
         id : props.id,
         tarea: tarea.value,
         descripcion: descripcion.value,
         hora: hora.value,
-        fecha: fecha.value,
-       // horaFin: horaFin.value
+        fecha: convertirFechaInversa(fecha.value),
+        //horaFin: horaFin.value
     };
     emit('confirmar', datosTarea);
 };
+
+watchEffect(() => {
+    tarea.value = props.tarea;
+    descripcion.value = props.descripcion;
+    hora.value = props.hora;
+    fecha.value = convertirFecha(props.fecha);
+   // horaFin.value = props.horaFin;
+});
 
 
 </script>
@@ -54,11 +57,11 @@ const confirmar = () => {
           
             </h1>
             <div class="input">
-                <input type="text" v-model="tarea" placeholder="Tarea" />
+                <input type="text" v-model="tarea" placeholder="Tarea" required/>
                 <input type="text" v-model="descripcion" placeholder="Descripcion" />
                 <input type="time" v-model="hora" placeholder="Hora" />
                 <!-- <input type="time" v-model="horaFin" placeholder="Hora Fin" /> -->
-                <input type="text" v-model="fecha"  placeholder="fecha" />
+                <input type="date" v-model="fecha"  placeholder="fecha" />
             
             </div>
             <button @click="$emit('close')">

@@ -5,7 +5,7 @@ import type { PropsDate } from '@/utils/Interfaces';
 
 // Definir props con valores por defecto
 const props = withDefaults(defineProps<PropsDate>(), {
-    dia: '1',
+    fecha: '1',
 
 });
 
@@ -13,25 +13,29 @@ const props = withDefaults(defineProps<PropsDate>(), {
 const emit = defineEmits(['close', 'confirmar']);
 
 // Variables reactivas para los datos de la tarea
-const tarea = ref<string>('');
-const descripcion = ref<string>('');
-const hora = ref<string>(''); 
+const tarea = ref<string>();
+const descripcion = ref<string>();
+const hora = ref<string>(); 
+const error = ref<string>();
 //const horaFin = ref<string>('');
 
 // Función para confirmar la tarea y emitir el evento 'confirm' con los datos de la tarea
 const confirmar = () => {
-    // Crear un objeto con los datos de la tarea
-    const datosTarea = {
+    //verificar que los campos no esten vacios
+    if (!tarea.value ) {
+     error.value = 'El campo tarea es obligatorio';
+    }else{
+         // Crear un objeto con los datos de la tarea
+        const datosTarea = {
         tarea: tarea.value,
         descripcion: descripcion.value,
         hora: hora.value,
-        //horaFin: horaFin.value,
-        fecha: `${props.dia}`
+        fecha: props.fecha  
     };
-    // Emitir el evento 'confirm' con los datos de la tarea
-    emit('confirmar', datosTarea);
-    clear();
-    
+     // Emitir el evento 'confirm' con los datos de la tarea
+        emit('confirmar', datosTarea); 
+        clear()
+    }
    
 };
 
@@ -40,8 +44,10 @@ const clear = () => {
     tarea.value = '';
     descripcion.value = '';
     hora.value = '';
+    error.value = '';
     //horaFin.value = '';
 };
+
 </script>
 
 
@@ -52,16 +58,19 @@ const clear = () => {
               &times;
             </div>
             <h1>
-                {{ dia }} 
+                {{ fecha }} 
             </h1>
             <div class="input">
-                <input type="text" placeholder="Tarea" v-model="tarea" />
-                <input type="text" placeholder="Descripcion" v-model="descripcion" />
+                 <div class="error" v-if="error">{{ error }}</div>
+
+                 
+                <input type="text" placeholder="Tarea" v-model="tarea"  required/>
+                <input type="text" placeholder="Descripcion" v-model="descripcion" required/>
                 <label for="fecha">Hora</label>
                 <input type="time" id="fecha" name="fecha" v-model="hora" />
                 <label for="fecha">Hora Fin</label>
                 <!-- <input type="time" id="fecha" name="fecha" v-model="horaFin" /> -->
-            
+        
             </div>
             <button @click="$emit('close')">
                 Cerrar
@@ -75,6 +84,15 @@ const clear = () => {
 </template>
 
 <style scoped>
+    .error {
+        color: rgba(255, 0, 0, 0.759);
+        border: 2px solid rgba(255, 0, 0, 0.267);
+        background-color: rgba(255, 0, 0, 0.267);
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+
+    }
     .pop-up {
         position: fixed;
         top: 0;
