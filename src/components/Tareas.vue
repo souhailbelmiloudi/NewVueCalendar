@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { getAllEventos, createEvento, deleteEvento, updateEvento } from '@/CrudAxios/crudAxios';
+import { convertirFecha, convertirFechaInversa } from '@/utils/dateFunciones';
 import { ref, onMounted } from 'vue';
 import type { Evento } from '@/utils/Interfaces';
-
-
-
 
 /** Lista reactiva que almacena todos los eventos */
 const eventos = ref<Evento[]>([]);
@@ -14,7 +12,6 @@ const tarea = ref<string>('');
 const descripcion = ref<string>('');
 const hora = ref<string>('');
 const fecha = ref<string>('');
-const fechainput = ref<string>('date');
 const inputbtn = ref<string>('Añadir');
 const id = ref<string>('');
 
@@ -23,14 +20,13 @@ const id = ref<string>('');
  * @returns {Promise<void>}
  */
 const addEvento = async (): Promise<void> => {
-    const fechaFormateada = new Date(fecha.value);
-    if (fechainput.value === 'date') {
+    if (inputbtn.value === 'Añadir') {
         try {
             const evento = await createEvento({
                 tarea: tarea.value,
                 descripcion: descripcion.value,
                 hora: hora.value,
-                fecha: `${fechaFormateada.getDate()}-${fechaFormateada.getMonth() + 1}-${fechaFormateada.getFullYear()}`
+                fecha: convertirFechaInversa(fecha.value)
             });
             eventos.value.push(evento);
             resetForm();
@@ -43,7 +39,7 @@ const addEvento = async (): Promise<void> => {
                 tarea: tarea.value,
                 descripcion: descripcion.value,
                 hora: hora.value,
-                fecha: fecha.value
+                fecha: convertirFechaInversa(fecha.value)
             });
             eventos.value = eventos.value.map((evento) => {
                 if (evento.id === id.value) {
@@ -52,7 +48,7 @@ const addEvento = async (): Promise<void> => {
                         tarea: tarea.value,
                         descripcion: descripcion.value,
                         hora: hora.value,
-                        fecha: fecha.value
+                        fecha: convertirFechaInversa(fecha.value)
                     };
                 }
                 return evento;
@@ -71,13 +67,9 @@ const ModificarEvent = (evento: Evento) => {
     tarea.value = evento.tarea;
     descripcion.value = evento.descripcion;
     hora.value = evento.hora;
-    fechainput.value = 'text';
     inputbtn.value = 'Modificar';
-
+    fecha.value=convertirFecha(evento.fecha)
     id.value = evento.id;
-    setTimeout(() => {
-        fecha.value = evento.fecha;
-    }, 1);
 
 }
 /**
@@ -111,7 +103,6 @@ const resetForm = () => {
     descripcion.value = '';
     hora.value = '';
     fecha.value = '';
-    fechainput.value = 'date';
     inputbtn.value = 'Añadir';
     id.value = '';
 };
@@ -133,7 +124,7 @@ onMounted(async () => {
                 <input type="text" id="tarea" v-model="tarea" placeholder="Tarea" />
                 <input type="text" id="descripcion" v-model="descripcion" placeholder="Descripción" />
                 <input type="time" id="hora" v-model="hora" />
-                <input :type="fechainput" id="fecha" v-model="fecha" />
+                <input type="date" id="fecha" v-model="fecha" />
                 <!--btn no activado-->
                 <input type="submit" :value="inputbtn" class="btnForm" />
             </form>

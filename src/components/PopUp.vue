@@ -18,6 +18,7 @@ const descripcion = ref<string>();
 const hora = ref<string>(); 
 const error = ref<string>();
 //const horaFin = ref<string>('');
+const color =ref<string>();
 
 // Función para confirmar la tarea y emitir el evento 'confirm' con los datos de la tarea
 const confirmar = () => {
@@ -30,7 +31,9 @@ const confirmar = () => {
         tarea: tarea.value,
         descripcion: descripcion.value,
         hora: hora.value,
-        fecha: props.fecha  
+        fecha: props.fecha,
+        //horaFin: horaFin.value,
+        color :color.value
     };
      // Emitir el evento 'confirm' con los datos de la tarea
         emit('confirmar', datosTarea); 
@@ -46,6 +49,7 @@ const clear = () => {
     hora.value = '';
     error.value = '';
     //horaFin.value = '';
+    color.value=''
 };
 
 
@@ -67,8 +71,10 @@ const clear = () => {
                 <input type="text" placeholder="Descripcion" v-model="descripcion" required/>
                 <label for="fecha">Hora</label>
                 <input type="time" id="fecha" name="fecha" v-model="hora" />
-                <label for="fecha">Hora Fin</label>
-                <!-- <input type="time" id="fecha" name="fecha" v-model="horaFin" /> -->
+                <!-- <label for="fecha">Hora Fin</label> 
+                <input type="time" id="fecha" name="fecha" v-model="horaFin" /> -->
+                <input type="color" placeholder="color" v-model="color" required/>
+
             </div>
             <button @click="$emit('close')">
                 Cerrar

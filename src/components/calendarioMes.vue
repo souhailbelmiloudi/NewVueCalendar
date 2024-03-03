@@ -32,7 +32,8 @@ const evento = ref<Evento>({
   descripcion: '',
   hora: '',
   fecha: '',
- //horaFin: ''
+  //horaFin: '',
+  color :''
 });
 
 /**
@@ -186,9 +187,6 @@ const filtrarDias = (tipo: string) => {
     case 'corto':
       return diasSemanaCorto2;
       break;
-    case 'soloFinde':
-      return ['Lunes', 'Martes']
-      break;
     case 'soloLaborales':
       return ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
       break;
@@ -239,7 +237,6 @@ watchEffect(() => {
         <option value="español">Español</option>
         <option value="ingles">Ingles</option>
         <option value="corto">Corto</option>
-        <option value="soloFinde">Solo fin de semana</option>
         <option value="soloLaborales">Solo laborales</option>
       </select>
   </div>
@@ -272,7 +269,7 @@ watchEffect(() => {
           <transition name="fade">
             <PopUpModificar v-show="popUpModificar && evento" @close="closePopUpModificar" @confirmar="modificarEvento"
               :id="evento.id" :tarea="evento.tarea" :descripcion="evento.descripcion" :hora="evento.hora"
-              :fecha="evento.fecha"  />
+              :fecha="evento.fecha"  :color="evento.color" />
               <!-- :horaFin="evento.horaFin" -->
           </transition>
         </td>

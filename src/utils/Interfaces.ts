@@ -6,6 +6,7 @@ export interface Evento {
     hora: string;
     fecha: string;
     //horaFin : string;
+    color :string
 }
 
 

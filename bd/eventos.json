@@ -1,11 +1,36 @@
 {
   "eventos": [
     {
-      "id": "0eb7",
+      "id": "7a11",
       "tarea": "Exam ",
-      "descripcion": "cliente segundo grupo",
-      "hora": "03:34",
-      "fecha": "19/3/2024"
+      "descripcion": "cliente",
+      "hora": "08:36",
+      "fecha": "4/3/2024",
+      "color": "#b94141"
+    },
+    {
+      "id": "baa0",
+      "tarea": "testz",
+      "descripcion": "",
+      "hora": "13:01",
+      "fecha": "13/3/2024",
+      "color": "#140c88"
+    },
+    {
+      "id": "da65",
+      "tarea": "test 2",
+      "descripcion": "test",
+      "hora": "14:05",
+      "fecha": "14/4/2024",
+      "color": "#95ce2c"
+    },
+    {
+      "id": "ae9c",
+      "tarea": "ssss",
+      "descripcion": "",
+      "hora": "12:21",
+      "fecha": "6/3/2024",
+      "color": "#8743db"
     }
   ]
 }

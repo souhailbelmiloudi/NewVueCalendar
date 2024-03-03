@@ -69,11 +69,6 @@ const decrementDrop = () => {
                     <img src="https://img.icons8.com/ios/50/000000/long-arrow-left.png"  @dragenter="decrementDrop"/>
                 </div>
                 <input type="text" v-model="mes[mimes - 1]" readonly />
-                <!-- <select name="" id="" v-model="mimes">
-                    <option v-for="(mesLetra, index) in mes" :key="index" :value="index + 1">
-                        {{ mesLetra }}
-                    </option>
-                </select> -->
                 <div class="chev" @click="VolverAlMesActual" @dragenter="VolverAlMesActual" @dragover.prevent>
                     <button @click="VolverAlMesActual" class="btnHoy">Hoy</button>
                 </div>

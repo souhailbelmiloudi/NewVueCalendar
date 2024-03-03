@@ -11,7 +11,8 @@ const props = withDefaults(defineProps<Evento>(), {
     descripcion: '',
     hora: '',
     fecha: '', 
-    //horaFin: ''  
+    //horaFin: ''  ,
+    color:''
 });
 const emit = defineEmits(['close', 'confirmar']);
 //variables reactivas
@@ -20,6 +21,8 @@ const descripcion = ref<string>(props.descripcion);
 const hora = ref<string>(props.hora);
 const fecha = ref<string>(props.fecha);
 //const horaFin = ref<string>(props.horaFin);
+const color = ref<string>(props.color);
+
 
 //funciones para el manejo de eventos
 const confirmar = () => {
@@ -29,7 +32,8 @@ const confirmar = () => {
         descripcion: descripcion.value,
         hora: hora.value,
         fecha: convertirFechaInversa(fecha.value),
-        //horaFin: horaFin.value
+        //horaFin: horaFin.value,
+        color:color.value
     };
     emit('confirmar', datosTarea);
 };
@@ -38,8 +42,9 @@ watchEffect(() => {
     tarea.value = props.tarea;
     descripcion.value = props.descripcion;
     hora.value = props.hora;
+    color.value= props.color
     fecha.value = convertirFecha(props.fecha);
-   // horaFin.value = props.horaFin;
+    //horaFin.value = props.horaFin;
 });
 
 
@@ -62,6 +67,7 @@ watchEffect(() => {
                 <input type="time" v-model="hora" placeholder="Hora" />
                 <!-- <input type="time" v-model="horaFin" placeholder="Hora Fin" /> -->
                 <input type="date" v-model="fecha"  placeholder="fecha" />
+                <input type="color" v-model="color"  placeholder="color" />
             
             </div>
             <button @click="$emit('close')">
